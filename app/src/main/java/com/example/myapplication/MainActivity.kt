@@ -3,12 +3,15 @@ package com.example.myapplication
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import java.io.InputStream
+import java.net.URL
 
 class MainActivity : AppCompatActivity() {
     private val REQUEST_CODE = 0;
@@ -37,9 +40,9 @@ class MainActivity : AppCompatActivity() {
             if(resultCode== RESULT_OK){
                 try{
                     if (data != null) {
-                        var inputStream:InputStream = contentResolver.openInputStream(data.data!!)!!
-                        img = BitmapFactory.decodeStream(inputStream);
-                        inputStream.close();
+                        var currentImageUrl:Uri? = data?.data
+                        img = MediaStore.Images.Media.getBitmap(contentResolver,currentImageUrl)
+                        imageView.setImageBitmap(img);
                     }
                 }catch (e:Exception){
                     print(e.message);
